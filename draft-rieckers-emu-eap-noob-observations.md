@@ -2,7 +2,7 @@
 v: 3
 cat: info # Check
 submissiontype: IETF
-area: SEC
+area: "Security"
 wg: Internet Engineering Task Force
 
 docname: draft-rieckers-emu-eap-noob-observations-latest
@@ -52,8 +52,8 @@ informative:
       TXT: https://www.ietf.org/archive/id/draft-rieckers-emu-eap-ute-00.txt
 
 venue:
-  group: EAP Method Update (emu)
-  mail: emu@ietf.org
+  group: "EAP Method Update"
+  mail: "emu@ietf.org"
 
 --- abstract
 
