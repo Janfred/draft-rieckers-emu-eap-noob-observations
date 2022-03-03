@@ -2,7 +2,7 @@
 
 
 
-Internet Engineering Task Force                           J.-F. Rieckers
+Internet Engineering Task Force                              J. Rieckers
 Internet-Draft                                                       DFN
 Intended status: Informational                              3 March 2022
 Expires: 4 September 2022
@@ -32,8 +32,8 @@ About This Document
    observations/.
 
    Discussion of this document takes place on the EAP Method Update
-   (emu) Working Group mailing list (mailto:emu@ietf.org), which is
-   archived at https://mailarchive.ietf.org/arch/browse/emu/.
+   Working Group mailing list (mailto:emu@ietf.org), which is archived
+   at https://mailarchive.ietf.org/arch/browse/emu/.
 
 Status of This Memo
 
