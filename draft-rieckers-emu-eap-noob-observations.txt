@@ -2,10 +2,10 @@
 
 
 
-Internet Engineering Task Force                              J. Rieckers
+Internet Engineering Task Force                           J.-F. Rieckers
 Internet-Draft                                                       DFN
-Intended status: Informational                              3 March 2022
-Expires: 4 September 2022
+Intended status: Informational                              4 March 2022
+Expires: 5 September 2022
 
 
                  Observations about EAP-NOOB (RFC 9140)
@@ -32,8 +32,8 @@ About This Document
    observations/.
 
    Discussion of this document takes place on the EAP Method Update
-   Working Group mailing list (mailto:emu@ietf.org), which is archived
-   at https://mailarchive.ietf.org/arch/browse/emu/.
+   (emu) Working Group mailing list (mailto:emu@ietf.org), which is
+   archived at https://mailarchive.ietf.org/arch/browse/emu/.
 
 Status of This Memo
 
@@ -50,7 +50,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 September 2022.
+   This Internet-Draft will expire on 5 September 2022.
 
 Copyright Notice
 
@@ -97,16 +97,16 @@ Table of Contents
    The author's initial reaction when they first read the draft was: Why
    use JSON and not a binary protocol?  Almost no advantages of using
    JSON (dynamic keys, reordering, flexible and possible deep structure)
-   are needed for or used in this protocol, on the other hand the JSON
-   serialization is problematic for the calculation of MAC/Hoob/...
+   are needed for or used in this protocol, while on the other hand the
+   JSON serialization is problematic for the calculation of MAC/Hoob/...
    Especially the need to extract the JSON value of the PeerInfo and
    ServerInfo field may cause problems in the Hash/HMAC calculation, if
    peer and server do not agree on a JSON serialization.
 
-   The protocol has many static parts (Always the type, mostly fixed
-   parameters depending on the type, ...), so it seems as if the amount
-   of bytes and the parsing effort could be significantly reduced if
-   static protocol messages (e.g. like in the TLS Handshake messages)
+   The protocol has many static parts (always the field "Type", mostly
+   fixed parameters depending on the type, ...), so it seems as if the
+   number of bytes and the parsing effort could be significantly reduced
+   if static protocol messages (e.g. like in the TLS Handshake messages)
    were used.
 
    If the message format should be more flexible, CBOR seems to be a
@@ -117,7 +117,7 @@ Table of Contents
 2.2.  IANA-Registries
 
    EAP-NOOB has a striking number of IANA-registered protocol parameters
-   with a dedicated IANA registry page only for EAP-NOOB.  At a first
+   with a dedicated IANA registry page only for EAP-NOOB.  At first
    glance this seems a bit odd, since the protocol does not seem to be
    this complex.
 
@@ -130,20 +130,20 @@ Table of Contents
    feasible for all use cases, especially if higher security levels are
    required.
 
-   As possible alternative, the COSE algorithms registry provides short
-   identifiers for many relevant parameters.
+   As a possible alternative, the COSE algorithms registry provides
+   short identifiers for many relevant parameters.
 
    Another odd thing is the Server-/PeerInfo Registry, see Section 2.4.
 
 2.3.  Unnecessarily long messages
 
-   It seems the protocol uses an unnecessary amount of bytes to transmit
-   the information.  Though this should not lead to issues on the EAP/
-   WPA2-Level, it seems that the protocol is not well-suited for
-   constrained devices.
+   It seems that the protocol uses an unnecessarily high number of bytes
+   to transfer the information.  Though this should not lead to issues
+   on the EAP/WPA2 level, it seems that the protocol is not well-suited
+   for constrained devices.
 
    This is especially prominent for the encoding of the ServerInfo and
-   PeerInfo fields.  Since the IANA-Policy is "Specification required",
+   PeerInfo fields.  Since the IANA policy is "Specification required",
    shorter identifiers could have been used instead of human-readable
    names, leading to shorter messages.
 
@@ -152,15 +152,15 @@ Table of Contents
    explicit information to identify the exact EAP instance running, so
    it seems a bit odd that the server and the peer keep telling each
    other what the PeerId is.  From the author's understanding, the
-   PeerId has only be to transmitted once, either in the first EAP-NOOB
+   PeerId only has to be transmitted once, either in the first EAP-NOOB
    message from the peer to the server, if the PeerId was assigned in a
    previous EAP-NOOB conversation, or in the second EAP-NOOB message
    from the server to the peer, if a new PeerId has to be allocated.
    The PeerId can then be saved to the current EAP state information.
-   This seems also useful to prevent bad implementations where the
+   This also seems useful to prevent bad implementations where the
    PeerId is not checked every time (since it is always the same
-   anyway), but for the calculation of Hoob/..., only the lastly
-   transmitted one is used, which an attacker could have modified.
+   anyway), but for the calculation of Hoob/..., only the one
+   transmitted last is used, which an attacker could have modified.
    However, this is a random thought of how broken implementations could
    be; the author has not yet analyzed the actual attack vector or its
    effects.
@@ -188,7 +188,7 @@ Table of Contents
    JSON and not a JSON-encoded string, the client has to parse the whole
    JSON tree in order to compute the correct Hoob/MACs/MACp/... value.
    Again, this could be easier with other data representation formats.
-   With CBOR the specification could simply use the bytes, which the
+   With CBOR, the specification could simply use the bytes, which the
    CBOR parser could easily distinguish.  Additionally, [RFC8949]
    specifies a canonical encoding, so both peer and server can generate
    the Hash/HMAC deterministically, even if the implementation only
@@ -197,13 +197,13 @@ Table of Contents
    Since the IANA registration procedure for PeerInfo/ServerInfo is
    "Specification required", additional use cases for these fields
    cannot easily be added.  For a Masters project at the University of
-   Bremen students are looking into MUD, and it would be interesting to
-   transmit the MUD URL in the PeerInfo, or the server could transmit
-   some initial (public) configuration parameters for the device, e.g.
-   the URI for a SmartHome controller.  Since RFC 9140 does not specify
-   how to deal with unexpected or unknown fields, this could lead to
-   unexpected behavior, if the peer does not understand the server's
-   parameters.
+   Bremen, students are looking into MUD ([RFC8520]), and it would be
+   interesting to transmit the MUD URL in the PeerInfo, or the server
+   could transmit some initial (public) configuration parameters for the
+   device, e.g. the URI for a SmartHome controller.  Since RFC 9140 does
+   not specify how to deal with unexpected or unknown fields, this could
+   lead to unexpected behavior, if the peer does not understand the
+   server's parameters.
 
 2.5.  Number of messages exchanged
 
@@ -250,20 +250,20 @@ Table of Contents
 
    The existence of the "Reconnecting" state in the state diagram is a
    bit confusing, since the differentiation between Reconnecting and
-   Registered State does not serve a further purpose than to determine
-   if the peer is currently connected to a network.  For the server, the
-   difference between Reconnecting and Registered state should not be
-   relevant at all, since it is never the initiator of the EAP
-   conversation.  Once the peer loses connection, a reconnect attempt
-   has to be started anyway, so the peer should never start an EAP-NOOB
-   Handshake when in state 4 (this behavior is also specified).
-   Specifying this State may help with implementation, but it might also
+   Registered State does not serve a further purpose other than to
+   determine if the peer is currently connected to a network.  For the
+   server, the difference between Reconnecting and Registered state
+   should not be relevant at all, since it is never the initiator of the
+   EAP conversation.  Once the peer loses its connection, a reconnect
+   attempt has to be started anyway, so the peer should never start an
+   EAP-NOOB handshake when in state 4 (this behavior is also specified).
+   Specifying this state may help with implementation, but it might also
    confuse the implementer.
 
 2.7.  Missing Specification
 
-   RFC 9140 never explicitly specifies which is the Protocol Version to
-   be used in the protocol.  Only example values are given in
+   RFC 9140 never explicitly specifies which value should be used for
+   the Protocol Version field.  Only example values are given in
    Section 3.3.2 for Vers and Verp, from which the version number 1
    could be guessed.
 
@@ -292,6 +292,11 @@ Table of Contents
               UTE)", Work in Progress, Internet-Draft, draft-rieckers-
               emu-eap-ute-00, 2022, <https://www.ietf.org/archive/id/
               draft-rieckers-emu-eap-ute-00.txt>.
+
+   [RFC8520]  Lear, E., Droms, R., and D. Romascanu, "Manufacturer Usage
+              Description Specification", RFC 8520,
+              DOI 10.17487/RFC8520, March 2019,
+              <https://www.rfc-editor.org/rfc/rfc8520>.
 
    [RFC8949]  Bormann, C. and P. Hoffman, "Concise Binary Object
               Representation (CBOR)", STD 94, RFC 8949,
